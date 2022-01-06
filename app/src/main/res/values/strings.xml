@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TopRedditsReader</string>
+
+    <string name="general_error">TopRedditsReader</string>
+</resources>
