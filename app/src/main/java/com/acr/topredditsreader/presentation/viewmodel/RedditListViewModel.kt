@@ -22,8 +22,11 @@ class RedditListViewModel @Inject constructor(
     private var redditMoreDataInternal = MutableLiveData<RedditDataRoot>()
     var redditMoreData: LiveData<RedditDataRoot> = redditMoreDataInternal
 
-    private var onErrorRedditDataInternal = MutableLiveData<OnErrorData>()
-    var onErrorRedditData: LiveData<OnErrorData> = onErrorRedditDataInternal
+    private var onErrorRedditDataInternal = MutableLiveData<String>()
+    var onErrorRedditData: LiveData<String> = onErrorRedditDataInternal
+
+    private var onLocalErrorRedditDataInternal = MutableLiveData<Int>()
+    var onLocalErrorRedditData: LiveData<Int> = onLocalErrorRedditDataInternal
 
     fun getRedditData() {
         disposable.add(getRedditDataUseCase()
@@ -50,10 +53,10 @@ class RedditListViewModel @Inject constructor(
     }
 
     private fun onError(errorInfo: String?) {
-        onErrorRedditDataInternal.value = errorInfo?.let {
-            OnErrorData(it)
+        errorInfo?.let {
+            onErrorRedditDataInternal.value = it
         } ?: run {
-            OnErrorData(localError = R.string.general_error)
+            onLocalErrorRedditDataInternal.value = R.string.general_error
         }
     }
 }

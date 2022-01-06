@@ -2,6 +2,7 @@ package com.acr.topredditsreader.presentation.activity
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.acr.topredditsreader.R
@@ -43,7 +44,12 @@ class RedditListActivity : BaseActivity() {
 
         redditListViewModel.onErrorRedditData.observe(this, {
             binding.loader.visibility = View.GONE
+            showError(it)
+        })
 
+        redditListViewModel.onLocalErrorRedditData.observe(this, {
+            binding.loader.visibility = View.GONE
+            showError(resources.getString(it))
         })
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_reddit_list)
@@ -86,5 +92,9 @@ class RedditListActivity : BaseActivity() {
         super.onStop()
 
         redditListViewModel.dispose()
+    }
+
+    private fun showError(error: String) {
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show()
     }
 }
