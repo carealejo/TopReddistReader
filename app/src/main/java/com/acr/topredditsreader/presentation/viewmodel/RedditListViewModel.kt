@@ -6,6 +6,8 @@ import com.acr.topredditsreader.R
 import com.acr.topredditsreader.core.platform.BaseViewModel
 import com.acr.topredditsreader.domain.datainformation.GetRedditDataUseCase
 import com.acr.topredditsreader.domain.datainformation.InitRedditDataBaseUseCase
+import com.acr.topredditsreader.domain.model.RedditChild
+import com.acr.topredditsreader.domain.model.RedditChildData
 import com.acr.topredditsreader.domain.model.RedditDataRoot
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -27,6 +29,14 @@ class RedditListViewModel @Inject constructor(
 
     private var onLocalErrorRedditDataInternal = MutableLiveData<Int>()
     var onLocalErrorRedditData: LiveData<Int> = onLocalErrorRedditDataInternal
+
+    private var openRedditDetailsInternal = MutableLiveData<RedditChildData>()
+    var openRedditDetails: LiveData<RedditChildData> = openRedditDetailsInternal
+
+    companion object {
+        private const val FORMAT_PNG = ".png"
+        private const val FORMAT_JPG = ".jpg"
+    }
 
     fun initRedditDataBase() {
         disposable.add(initRedditDataBaseUseCase()
@@ -58,11 +68,24 @@ class RedditListViewModel @Inject constructor(
             })
     }
 
-    private fun onError(errorInfo: String?) {
+    fun checkRedditDetails(redditChildData: RedditChildData) {
+        redditChildData.url_overridden_by_dest?.let { imageUrl ->
+            val extention =  imageUrl.substring(imageUrl.lastIndexOf("."));
+            if (extention.equals(FORMAT_PNG) || extention.equals(FORMAT_JPG)) {
+                openRedditDetailsInternal.value = redditChildData
+            } else {
+                onError(localError = R.string.image_not_supported)
+            }
+        } ?: run {
+            onError()
+        }
+    }
+
+    private fun onError(errorInfo: String? = null, localError: Int = R.string.general_error) {
         errorInfo?.let {
             onErrorRedditDataInternal.value = it
         } ?: run {
-            onLocalErrorRedditDataInternal.value = R.string.general_error
+            onLocalErrorRedditDataInternal.value = localError
         }
     }
 }

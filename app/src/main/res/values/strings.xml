@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">TopRedditsReader</string>
 
-    <string name="general_error">TopRedditsReader</string>
+    <string name="general_error">General Error</string>
+    <string name="image_not_supported">Image not suppoorted</string>
 </resources>

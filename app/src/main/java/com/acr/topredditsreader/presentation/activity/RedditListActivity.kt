@@ -1,5 +1,6 @@
 package com.acr.topredditsreader.presentation.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -12,9 +13,10 @@ import com.acr.topredditsreader.presentation.adapter.RedditAdapter
 import com.acr.topredditsreader.presentation.viewmodel.RedditListViewModel
 import javax.inject.Inject
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.acr.topredditsreader.domain.model.RedditChild
+import com.acr.topredditsreader.domain.model.RedditChildData
 
-
-class RedditListActivity : BaseActivity() {
+class RedditListActivity : BaseActivity(), RedditAdapter.Listener {
 
     @Inject
     lateinit var redditListViewModel: RedditListViewModel
@@ -52,9 +54,16 @@ class RedditListActivity : BaseActivity() {
             showError(resources.getString(it))
         })
 
+        redditListViewModel.openRedditDetails.observe(this, { redditDetails ->
+            val intent = Intent(this, RedditChildDetailsActivity::class.java).apply {
+                putExtra(RedditChildDetailsActivity.REDDIT_DETAILLS, redditDetails)
+            }
+            startActivity(intent)
+        })
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_reddit_list)
         binding.apply {
-            redditAdapter = RedditAdapter()
+            redditAdapter = RedditAdapter(this@RedditListActivity)
             recyclerRedditData.adapter = redditAdapter
 
             swipeRefresh.setOnRefreshListener {
@@ -90,17 +99,23 @@ class RedditListActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
 
-        binding.loader.visibility = View.VISIBLE
-        redditListViewModel.getRedditData()
+        if (redditAdapter?.itemCount == 0) {
+            binding.loader.visibility = View.VISIBLE
+            redditListViewModel.getRedditData()
+        }
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
 
         redditListViewModel.dispose()
     }
 
     private fun showError(error: String) {
         Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+    }
+
+    override fun onItemClick(redditChildData: RedditChildData) {
+        redditListViewModel.checkRedditDetails(redditChildData)
     }
 }

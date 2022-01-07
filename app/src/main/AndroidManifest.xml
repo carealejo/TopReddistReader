@@ -14,6 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TopRedditsReader">
         <activity
+            android:name=".presentation.activity.RedditChildDetailsActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".presentation.activity.RedditListActivity"
             android:exported="true">
             <intent-filter>

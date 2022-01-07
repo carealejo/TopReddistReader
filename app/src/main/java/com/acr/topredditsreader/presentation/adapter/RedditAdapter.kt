@@ -7,9 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.acr.topredditsreader.R
 import com.acr.topredditsreader.databinding.RedditItemBinding
 import com.acr.topredditsreader.domain.model.RedditChild
+import com.acr.topredditsreader.domain.model.RedditChildData
 import com.bumptech.glide.Glide
 
-class RedditAdapter : RecyclerView.Adapter<RedditAdapter.RedditHolder>() {
+class RedditAdapter(private val listener: Listener) : RecyclerView.Adapter<RedditAdapter.RedditHolder>() {
+
+    interface Listener {
+        fun onItemClick(redditChildData: RedditChildData)
+    }
 
     private var redditDataList: MutableList<RedditChild> = arrayListOf()
 
@@ -31,6 +36,10 @@ class RedditAdapter : RecyclerView.Adapter<RedditAdapter.RedditHolder>() {
                 .centerCrop()
                 .error(R.drawable.no_image_available)
                 .into(holder.binding.imageThumbnail)
+
+            holder.binding.cardView.setOnClickListener {
+                listener.onItemClick(itemData)
+            }
         }
     }
 

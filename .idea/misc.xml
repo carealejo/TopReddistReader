@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.20364583333333333" />
+        <entry key="app/src/main/res/layout/activity_reddit_child_details.xml" value="0.245018115942029" />
         <entry key="app/src/main/res/layout/activity_reddit_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/reddit_item.xml" value="0.335" />
       </map>
