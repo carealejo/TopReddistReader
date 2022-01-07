@@ -14,15 +14,15 @@ class GetRedditDataService @Inject constructor(private val retrofit: Retrofit) {
         try {
             retrofit.create(APIService::class.java).getRedditData().execute().also {
                 return if (it.isSuccessful && it.body() is RedditDataRoot) {
-                    Response(it.body())
+                    Response(it.body(), code = it.code())
                 } else {
                     Log.e(javaClass.name, it.errorBody().toString())
-                    Response(success = false, error = it.errorBody().toString())
+                    Response(success = false, code = it.code(), error = it.errorBody().toString())
                 }
             }
         } catch (e: Exception) {
             Log.e(javaClass.name, e.toString())
-            return Response(success = false, error = e.toString())
+            return Response(success = false, code = -1, error = e.toString())
         }
     }
 }

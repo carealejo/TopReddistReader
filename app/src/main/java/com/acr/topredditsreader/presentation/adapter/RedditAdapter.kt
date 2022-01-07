@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.acr.topredditsreader.R
 import com.acr.topredditsreader.databinding.RedditItemBinding
 import com.acr.topredditsreader.domain.model.RedditChild
 import com.bumptech.glide.Glide
@@ -28,6 +29,7 @@ class RedditAdapter : RecyclerView.Adapter<RedditAdapter.RedditHolder>() {
             Glide.with(holder.itemView.context)
                 .load(itemData.thumbnail)
                 .centerCrop()
+                .error(R.drawable.no_image_available)
                 .into(holder.binding.imageThumbnail)
         }
     }

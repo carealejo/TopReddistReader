@@ -1,10 +1,13 @@
 package com.acr.topredditsreader.core.di
 
 import android.content.Context
+import androidx.room.Room
 import com.acr.topredditsreader.TopReddistReaderApplication
+import com.acr.topredditsreader.data.database.AppDatabase
 import com.acr.topredditsreader.data.repository.GetRedditDataRepoImpl
 import com.acr.topredditsreader.data.service.GetRedditDataService
 import com.acr.topredditsreader.domain.datainformation.GetRedditDataUseCase
+import com.acr.topredditsreader.domain.datainformation.InitRedditDataBaseUseCase
 import com.acr.topredditsreader.domain.repository.GetRedditDataRepo
 import com.acr.topredditsreader.presentation.viewmodel.RedditListViewModel
 import dagger.Module
@@ -27,6 +30,13 @@ class ApplicationModule(private val application: TopReddistReaderApplication) {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
+    @Provides
+    @Singleton
+    fun provideAppDatabase() = Room.databaseBuilder(
+        application,
+        AppDatabase::class.java, "top-reddit-reader-database")
+        .build()
+
     // Service
     @Provides
     @Singleton
@@ -35,14 +45,18 @@ class ApplicationModule(private val application: TopReddistReaderApplication) {
     // Repository
     @Provides
     @Singleton
-    fun provideGetDataRepo(getRedditDataService: GetRedditDataService): GetRedditDataRepo = GetRedditDataRepoImpl(getRedditDataService)
+    fun provideGetDataRepo(getRedditDataService: GetRedditDataService, appDatabase: AppDatabase): GetRedditDataRepo = GetRedditDataRepoImpl(getRedditDataService, appDatabase)
 
     // UseCase
     @Provides
     @Singleton
     fun provideGetDataInformationUseCase(getRedditDataRepo: GetRedditDataRepo) = GetRedditDataUseCase(getRedditDataRepo)
 
+    @Provides
+    @Singleton
+    fun provideInitRedditDataBaseUseCase(getRedditDataRepo: GetRedditDataRepo) = InitRedditDataBaseUseCase(getRedditDataRepo)
+
     // ViewModel
     @Provides
-    fun provideHomeViewModel(getRedditDataUseCase: GetRedditDataUseCase) = RedditListViewModel(getRedditDataUseCase)
+    fun provideHomeViewModel(getRedditDataUseCase: GetRedditDataUseCase, initRedditDataBaseUseCase: InitRedditDataBaseUseCase) = RedditListViewModel(getRedditDataUseCase, initRedditDataBaseUseCase)
 }

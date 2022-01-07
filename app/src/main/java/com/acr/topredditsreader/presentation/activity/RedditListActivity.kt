@@ -81,6 +81,12 @@ class RedditListActivity : BaseActivity() {
         setContentView(binding.root)
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        redditListViewModel.initRedditDataBase()
+    }
+
     override fun onResume() {
         super.onResume()
 

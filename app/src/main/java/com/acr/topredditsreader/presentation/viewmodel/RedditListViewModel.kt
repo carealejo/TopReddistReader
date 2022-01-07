@@ -5,15 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import com.acr.topredditsreader.R
 import com.acr.topredditsreader.core.platform.BaseViewModel
 import com.acr.topredditsreader.domain.datainformation.GetRedditDataUseCase
-import com.acr.topredditsreader.domain.model.OnErrorData
+import com.acr.topredditsreader.domain.datainformation.InitRedditDataBaseUseCase
 import com.acr.topredditsreader.domain.model.RedditDataRoot
-import com.acr.topredditsreader.domain.model.Response
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class RedditListViewModel @Inject constructor(
-    private val getRedditDataUseCase: GetRedditDataUseCase
+    private val getRedditDataUseCase: GetRedditDataUseCase,
+    private val initRedditDataBaseUseCase: InitRedditDataBaseUseCase
 ) : BaseViewModel() {
 
     private var redditDataInternal = MutableLiveData<RedditDataRoot>()
@@ -27,6 +27,12 @@ class RedditListViewModel @Inject constructor(
 
     private var onLocalErrorRedditDataInternal = MutableLiveData<Int>()
     var onLocalErrorRedditData: LiveData<Int> = onLocalErrorRedditDataInternal
+
+    fun initRedditDataBase() {
+        disposable.add(initRedditDataBaseUseCase()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe {})
+    }
 
     fun getRedditData() {
         disposable.add(getRedditDataUseCase()
