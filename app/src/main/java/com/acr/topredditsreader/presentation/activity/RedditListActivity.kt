@@ -13,7 +13,6 @@ import com.acr.topredditsreader.presentation.adapter.RedditAdapter
 import com.acr.topredditsreader.presentation.viewmodel.RedditListViewModel
 import javax.inject.Inject
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.acr.topredditsreader.domain.model.RedditChild
 import com.acr.topredditsreader.domain.model.RedditChildData
 
 class RedditListActivity : BaseActivity(), RedditAdapter.Listener {

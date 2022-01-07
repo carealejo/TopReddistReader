@@ -25,7 +25,7 @@ class ApplicationModule(private val application: TopReddistReaderApplication) {
 
     @Provides
     @Singleton
-    fun provideRetrofit() = Retrofit.Builder()
+    fun provideRetrofit(): Retrofit = Retrofit.Builder()
         .baseUrl("https://www.reddit.com")
         .addConverterFactory(GsonConverterFactory.create())
         .build()

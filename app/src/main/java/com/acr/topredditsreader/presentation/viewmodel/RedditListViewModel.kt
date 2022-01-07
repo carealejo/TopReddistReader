@@ -6,7 +6,6 @@ import com.acr.topredditsreader.R
 import com.acr.topredditsreader.core.platform.BaseViewModel
 import com.acr.topredditsreader.domain.datainformation.GetRedditDataUseCase
 import com.acr.topredditsreader.domain.datainformation.InitRedditDataBaseUseCase
-import com.acr.topredditsreader.domain.model.RedditChild
 import com.acr.topredditsreader.domain.model.RedditChildData
 import com.acr.topredditsreader.domain.model.RedditDataRoot
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -70,8 +69,8 @@ class RedditListViewModel @Inject constructor(
 
     fun checkRedditDetails(redditChildData: RedditChildData) {
         redditChildData.url_overridden_by_dest?.let { imageUrl ->
-            val extention =  imageUrl.substring(imageUrl.lastIndexOf("."));
-            if (extention.equals(FORMAT_PNG) || extention.equals(FORMAT_JPG)) {
+            val extention =  imageUrl.substring(imageUrl.lastIndexOf("."))
+            if (extention == FORMAT_PNG || extention == FORMAT_JPG) {
                 openRedditDetailsInternal.value = redditChildData
             } else {
                 onError(localError = R.string.image_not_supported)

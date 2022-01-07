@@ -24,8 +24,8 @@ class GetRedditDataRepoImpl @Inject constructor(
             } else {
                 val allData = appDatabase.redditLocalDataDao().getAll()
                 allData[0].let {
-                    val data = Gson().fromJson(it.data, RedditDataRoot::class.java)
-                    emitter.onNext(Response(value = data, code = 0))
+                    val localData = Gson().fromJson(it.data, RedditDataRoot::class.java)
+                    emitter.onNext(Response(value = localData, code = 0))
                 }
             }
             emitter.onComplete()

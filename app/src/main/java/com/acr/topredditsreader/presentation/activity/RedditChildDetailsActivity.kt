@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.acr.topredditsreader.R
 import com.acr.topredditsreader.databinding.ActivityRedditChildDetailsBinding
-import com.acr.topredditsreader.databinding.ActivityRedditListBinding
 import com.acr.topredditsreader.domain.model.RedditChildData
 import com.bumptech.glide.Glide
 
